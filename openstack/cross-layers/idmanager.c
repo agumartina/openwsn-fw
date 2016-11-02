@@ -30,8 +30,8 @@ void idmanager_init() {
    
    // myPANID
    idmanager_vars.myPANID.type         = ADDR_PANID;
-   idmanager_vars.myPANID.panid[0]     = 0xca;
-   idmanager_vars.myPANID.panid[1]     = 0xfe;
+   idmanager_vars.myPANID.panid[0]     = 0xce;
+   idmanager_vars.myPANID.panid[1]     = 0xca;
    
    // myPrefix
    idmanager_vars.myPrefix.type        = ADDR_PREFIX;

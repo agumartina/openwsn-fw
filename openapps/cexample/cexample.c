@@ -18,10 +18,10 @@
 //=========================== defines =========================================
 
 /// inter-packet period (in ms)
-#define CEXAMPLEPERIOD  10000
-#define PAYLOADLEN      40
+#define CEXAMPLEPERIOD  10000       // How long is our timer period
+#define PAYLOADLEN      10          // How large will our packets be
 
-const uint8_t cexample_path0[] = "ex";
+const uint8_t cexample_path0[] = "ex";      // short name of our application when others access it via CoAP
 
 //=========================== variables =======================================
 
@@ -53,9 +53,9 @@ void cexample_init() {
    
    
    opencoap_register(&cexample_vars.desc);
-   cexample_vars.timerId    = opentimers_start(CEXAMPLEPERIOD,
-                                                TIMER_PERIODIC,TIME_MS,
-                                                cexample_timer_cb);
+   cexample_vars.timerId    = opentimers_start(CEXAMPLEPERIOD,              // call the function cexample_timer_cb(), once every CEXAMPLEPERIOD milliseconds.
+                                                TIMER_PERIODIC,TIME_MS,     // We set the timer type to TIMER_PERIODIC, to tell the timer module to execute cexample_timer_cb()
+                                                cexample_timer_cb);         // periodically, rather than just one time.
 }
 
 //=========================== private =========================================
@@ -81,6 +81,7 @@ void cexample_task_cb() {
    uint16_t             sum         = 0;
    uint16_t             avg         = 0;
    uint8_t              N_avg       = 10;
+   srand(time(NULL));
    
    // don't run if not synch
    if (ieee154e_isSynch() == FALSE) return;
@@ -90,11 +91,13 @@ void cexample_task_cb() {
       opentimers_stop(cexample_vars.timerId);
       return;
    }
-   
+
+   // aca vemos que enviamos! :)
    for (i = 0; i < N_avg; i++) {
-      sum += x_int;
+     sum += x_int;
    }
    avg = sum/N_avg;
+  // avg = rand() % 40;
    
    // create a CoAP RD packet
    pkt = openqueue_getFreePacketBuffer(COMPONENT_CEXAMPLE);

@@ -9,12 +9,17 @@
 #include "packetfunctions.h"
 #include "leds.h"
 #include "openqueue.h"
+#include <math.h>
+#include <time.h>
 
 //=========================== variables =======================================
-
+#define PI 3.14159265
 cleds_vars_t cleds_vars;
+float result;
+int param;
+clock_t t;
 
-const uint8_t cleds_path0[]       = "l";
+const uint8_t cleds_path0[]       = "IoT";
 
 //=========================== prototypes ======================================
 
@@ -70,49 +75,29 @@ owerror_t cleds_receive(
          // reset packet payload
          msg->payload                     = &(msg->packet[127]);
          msg->length                      = 0;
-         
+
          // add CoAP payload
          packetfunctions_reserveHeaderSize(msg,2);
          msg->payload[0]                  = COAP_PAYLOAD_MARKER;
 
-         if (leds_error_isOn()==1) {
-            msg->payload[1]               = '1';
-         } else {
-            msg->payload[1]               = '0';
-         }
-            
+         srand (time(NULL));
+         result= rand()%100;
+
+         //packetfunctions_reserveHeaderSize(msg,sizeof(result)-1);
+         msg->payload[1]               = result;
+         //packetfunctions_reserveHeaderSize(msg,sizeof(param)-1);
+         //memcpy(&msg->payload[0],&param,sizeof(param)-1);
          // set the CoAP header
          coap_header->Code                = COAP_CODE_RESP_CONTENT;
-         
+
          outcome                          = E_SUCCESS;
          break;
-      
-      case COAP_CODE_REQ_PUT:
-      
-         // change the LED's state
-         if (msg->payload[0]=='1') {
-            leds_error_on();
-         } else if (msg->payload[0]=='2') {
-            leds_error_toggle();
-         } else {
-            leds_error_off();
-         }
-         
-         // reset packet payload
-         msg->payload                     = &(msg->packet[127]);
-         msg->length                      = 0;
-         
-         // set the CoAP header
-         coap_header->Code                = COAP_CODE_RESP_CHANGED;
-         
-         outcome                          = E_SUCCESS;
-         break;
-         
+
       default:
          outcome                          = E_FAIL;
          break;
    }
-   
+
    return outcome;
 }
 
