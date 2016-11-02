@@ -154,7 +154,7 @@ enum {
    COMPONENT_OPENCOAP                  = 0x19,
    // applications
    COMPONENT_C6T                       = 0x1a,
-   COMPONENT_CEXAMPLE                  = 0x1b,
+   COMPONENT_CEXAMPLE                  = 0x1b,      // nuestra app1
    COMPONENT_CINFO                     = 0x1c,
    COMPONENT_CLEDS                     = 0x1d,
    COMPONENT_CSENSORS                  = 0x1e,
@@ -167,6 +167,7 @@ enum {
    COMPONENT_RRT                       = 0x25,
    COMPONENT_SECURITY                  = 0x26,
    COMPONENT_USERIALBRIDGE             = 0x27,
+
 };
 
 /**
